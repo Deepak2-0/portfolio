@@ -8,6 +8,9 @@
 	font-weight: 700;
 }
 
+img {
+	max-width: 100%;
+}
 /* Prose coming from tailwind */
 .prose img {
 	margin-left: auto;
