@@ -1,5 +1,5 @@
 import React from "react";
-import leafImage from "../leaves.jpg";
+import leafImage from "../leaves1.jpg";
 
 const Home = () => {
 	return (
