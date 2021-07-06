@@ -1,10 +1,63 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import sanityClient from "../client";
+
+import { Link } from "react-router-dom";
 
 const Post = () => {
+	const [postData, setPostData] = useState(null);
+
+	useEffect(() => {
+		sanityClient
+			.fetch(
+				//it is a GROQ language similar to GraphQl for fetching data from sanity
+				`*[_type== "post"]{
+				title,
+				slug,
+				mainImage{
+					asset ->{
+						_id,
+						url
+					},
+					alt
+				}
+			}`
+			)
+			.then((data) => setPostData(data))
+			.catch(console.error);
+	}, []);
+
 	return (
-		<div>
-			<h1>Post</h1>
-		</div>
+		<main className="bg-green-100 min-h-screen p-12">
+			<section className="container mx-auto">
+				<h1 className="text-5xl flex justify-center cursive">Blog Post Page</h1>
+				<h2 className="text-lg text-gray-600 flex justify-center mb-12">
+					Welcome to my Blog Post Page
+				</h2>
+				<div className="grid md:grid-cols-2 lg:grid:cols-3 gap-8">
+					{postData?.map((post) => (
+						<article>
+							<Link
+								to={"/post/" + post?.slug?.current}
+								key={post?.slug?.current}
+							>
+								<span className="block height-64  relative round shadow leading-snug bg-white border-l-8 border-green-400">
+									<img
+										src={post.mainImage.asset.url}
+										alt={post.mainImage.asset.alt}
+										className="w-full h-full  rounder-r object-cover-absolute "
+									/>
+									<span className="block relative h-full flex justify-end items-end pr-4 pb-4 ">
+										<h3 className="text-gray-800 text-lg font-blog px-3 py-4 bg-red-700 text-red--100  bg-opacity-75">
+											{post.title}
+										</h3>
+									</span>
+								</span>
+							</Link>
+						</article>
+					))}
+				</div>
+			</section>
+		</main>
 	);
 };
 
