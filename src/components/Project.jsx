@@ -6,6 +6,7 @@ const Project = () => {
 
 	useEffect(() => {
 		SanityClient.fetch(
+			//it is a GROQ language similar to GraphQl for fetching data from sanity
 			`*[_type=="project"]{
 				title,
 				date,
